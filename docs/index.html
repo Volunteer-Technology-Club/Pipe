@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <title>Pipe Browser</title>
+        <style>
+            body {
+                background-image: url("background.png");
+                color: #000;
+                font-family: "Raleway";
+                text-align: center;
+                user-select: none;
+                overflow: clip;
+            }
+
+            div.window {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                border: 1px solid #000;
+                position: absolute;
+                display: inline-block;
+                transform: translateX(-50%);
+                width: 600px;
+                height: 300px;
+            }
+            span.window-top {
+                background-color: #faa;
+                display:block;
+                margin-top: -20px;
+                margin-left: -20px;
+                width: calc(100% + 40px);
+                height:20px;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                border-bottom: 1px solid #000;
+                cursor: move;
+            }
+            span.window-top * {
+                transform: translate(294px, 1px);
+            }
+
+            div.flex-row {
+                display: flex;
+                flex-direction: row;
+                flex: 1;
+                gap: 10px;
+                height: 40px;
+                justify-content: center;
+            }
+
+            input {
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid #000;
+                font-family: "Raleway";
+                font-size: 20px;
+                width: 500px;
+            }
+
+            button.send {
+                width: 40px;
+                height: 40px;
+                font-size: 33px;
+                background-color: #faa;
+                border: 1px solid #000;
+                color: #fff;
+                border-radius: 10px;
+                transition: background-color 0.25s;
+            }
+            button.send:hover {
+                background-color: #f88;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="window">
+            <span class="window-top" onmousedown="followMouse(this.parentElement)" onmouseup="stopFollowing()">
+                <img src="full.png">
+                <img src="half.png">
+                <img src="empty.png">
+            </span>
+            <h1 style="font-size: 50px;">Pipe Proxy</h1>
+            <br>
+            <form action="browser.html" method="post">
+                <div class="flex-row">
+                    <input name="search" placeholder="Enter search query or URL">
+                    <button type="submit" class="send"><i class="material-icons">send</i></button>
+                </div>
+            </form>
+        </div>
+    </body>
+    <script>
+        var x = 0;
+        var y = 0;
+
+        window.onmousemove = function(e) {
+            x = e.clientX;
+            y = e.clientY;
+        };
+
+        
+        var targ = 0;
+
+        function followMouse(obj) {
+            targ = setInterval(function() {
+                obj.style.left = x + "px";
+                obj.style.top = (y - 10) + "px";
+            }, 10);
+        }
+
+        function stopFollowing() {
+            clearInterval(targ);
+        }
+    </script>
+</html>
