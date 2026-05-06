@@ -1,3 +1,3 @@
 killall devtunnel.exe
-nodemon main.js
+npx nodemon main.js
 devtunnel host pipe

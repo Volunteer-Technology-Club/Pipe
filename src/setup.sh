@@ -5,8 +5,9 @@ then
     chmod +x src/devtunnel
     sudo cp src/devtunnel /usr/local/bin
 fi
+source ~/.bashrc
 sudo apt install nodejs
-npm install nodemon
+npx npm install nodemon
 devtunnel user login -g
 devtunnel create pipe
 devtunnel port create pipe --port-number 6080

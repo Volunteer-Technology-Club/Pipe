@@ -1,8 +1,11 @@
+const { JSDOM } = require("jsdom");
+
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
 
 const srcReg = new RegExp("src=*.?");
+const hrefReg = new RegExp("href=*.?");
 
 const app = express();
 
@@ -14,25 +17,32 @@ app.use(express.urlencoded({ extended: true }));
 
 app.post("/{*any}", async (req, res) => {
     const page = await fetch(req.body.search);
-    const html = await page.text();
 
-    const elems = html.split(" ");
-    
-    for (var i = 0; i < elems.length; i++) {
-        if (srcReg.test(elems[i])) {
-            const src = await fetch(elems[i].substring(5, elems[i].length - 1));
-            const blob = await src.blob();
+    var dom = new JSDOM(await page.text());
 
-            const dataurl = `data:${blob.type};base64,${Buffer.from(await blob.arrayBuffer()).toString("base64")}`;
-            console.log(dataurl);
-            elems[i] = `src="${dataurl}"`;
-        }
+    for (var child of Array.from(dom.window.document.children)) {
+        parseChild(child);
     }
 
     res.type(".html");
 
-    res.send(html);
+    res.send(dom.serialize());
 });
+
+async function parseChild(child) {
+    if (child.getAttribute("src")) {
+        const src = await fetch(child.getAttribute("src"));
+        const blob = await src.blob();
+        
+        const dataurl = `data:${blob.type};base64,${Buffer.from(await blob.arrayBuffer()).toString("base64")}`;
+        
+        child.setAttribute("src", dataurl);
+
+        for (var nested of Array.from(child.children)) {
+            parseChild(nested);
+        }
+    } 
+}
 
 app.listen(6080, () => {
     console.log("Listening on port 6080");
