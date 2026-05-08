@@ -1,6 +1,7 @@
 chmod +x shell/devtunnel
 sudo cp shell/devtunnel /usr/local/bin
 sudo apt install nodejs
+npx npm install jsdom
 npx npm install express
 npx npm install path
 npx npm install nodemon
