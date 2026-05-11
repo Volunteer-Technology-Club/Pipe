@@ -1,5 +1,6 @@
 chmod +x shell/devtunnel
 sudo cp shell/devtunnel /usr/local/bin
+sudo apt update
 sudo apt install nodejs
 npx npm install jsdom
 npx npm install express
