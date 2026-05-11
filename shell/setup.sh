@@ -1,7 +1,7 @@
-chmod +x shell/devtunnel
-sudo cp shell/devtunnel /usr/local/bin
+curl -sL https://aka.ms/DevTunnelCliInstall | bash
 sudo apt update
-sudo apt install nodejs
+sudo apt download nodejs
+sudo dpkg -i --force-all nodejs*.deb
 npx npm install jsdom
 npx npm install express
 npx npm install path
